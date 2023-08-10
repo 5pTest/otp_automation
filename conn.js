@@ -45,10 +45,11 @@ app.post('/post', (req, res)=>{
     let otp;
 
     msg_arr.forEach(element =>{
+        let temp_var = element;
         if(element.length === 4 || element.length === 6) {
-            let num = +element;
-            if(!isNaN(num)){
-                otp = num;
+            // let num = element;
+            if(!isNaN(element)){
+                otp = temp_var;
             }
         } 
         if(element==='5Paisa'){
@@ -57,7 +58,8 @@ app.post('/post', (req, res)=>{
     });
     if(otp==null){
         console.log("NO OTP FOUND");
-        res.send("No otp found...")
+        // res.send("No otp found...");
+        return res.json({message: "No otp found..."});
     } else{
      console.log("THE OTP IS: ", otp);   
     }
@@ -69,14 +71,14 @@ app.post('/post', (req, res)=>{
     let mobile = req.body.number; //hc
     console.log("OTP here: ",otp);
     console.log("Mobile number here: ",mobile);
-    connection.query(`INSERT INTO MESSAGE (sender, message_time, message, otp, user_mobile) VALUES ('${sender}', NOW(), '${msg}', ${otp}, '${mobile}');`,
+    connection.query(`INSERT INTO MESSAGE (sender, message_time, message, otp, user_mobile) VALUES ('${sender}', NOW(), '${msg}', '${otp}', '${mobile}');`,
     function(err, result){
         if(err){
             console.log(`Error executing the query - ${err}`);
         }
         else{
             console.log("Result: ", result);
-            res.json({message: "SMS stored successfully!!!"});
+            return res.json({message: "SMS stored successfully!!!"});
         }
     });
 });
