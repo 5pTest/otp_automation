@@ -41,7 +41,10 @@ app.listen(port, ()=>{
 app.post('/post', (req, res)=>{
     let sender;
     let msg = req.body.message;
+    var regex = /[.,]/g;
+    msg = msg.replace(regex, '');
     let msg_arr = msg.split(" ");
+    console.log(msg_arr);
     let otp;
 
     msg_arr.forEach(element =>{
@@ -58,7 +61,6 @@ app.post('/post', (req, res)=>{
     });
     if(otp==null){
         console.log("NO OTP FOUND");
-        // res.send("No otp found...");
         return res.json({message: "No otp found..."});
     } else{
      console.log("THE OTP IS: ", otp);   
